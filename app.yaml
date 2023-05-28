@@ -1,0 +1,3 @@
+runtime: python37
+manual_scaling:
+      instances: 3

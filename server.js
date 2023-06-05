@@ -25,14 +25,19 @@ db.connect((err) => {
 });
 
 const app = express();
-
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-const jwtSecret = 'your_jwt_secret_key';
+const jwtSecret = 'patypet_secret';
 
 app.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
   
+  if (!emailRegex.test(email)) {
+    res.status(400).json({ error: 'Invalid email format' });
+    return;
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     

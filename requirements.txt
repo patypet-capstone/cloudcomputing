@@ -1,4 +1,5 @@
 Flask
 tensorflow
-Keras
+numpy
+keras
 google-cloud-storage

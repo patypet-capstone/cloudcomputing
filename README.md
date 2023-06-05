@@ -26,7 +26,7 @@ sudo apt install git
 2. Change to the directory where you want to clone the repository.
 3. Clone the repository using the following command:
 ```shell
-git clone -b dev3 https://github.com/patypet-capstone/cloudcomputing.git
+git clone -b Auth https://github.com/patypet-capstone/cloudcomputing.git
 ```
 4. Change to the cloudcomputing directory:
 ```shell

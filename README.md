@@ -69,6 +69,9 @@ change the server_name YOUR_SERVERS_IP_ADDRESS with your external IP from intanc
 
 ### Restart Nginx
 To apply the changes, restart the Nginx service:
+```shell
+sudo service nginx restart
+```
 
 ### Start the Server
 1. Switch to the root user:

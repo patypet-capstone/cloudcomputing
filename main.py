@@ -5,9 +5,25 @@ from keras_preprocessing.image import load_img, img_to_array
 import numpy as np
 from google.cloud import storage
 from google.auth import default
+from dotenv import load_dotenv
+import mysql.connector
 import os
 import uuid
 import json
+
+load_dotenv()
+DB_HOST = os.getenv("DB_HOST")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_DATABASE = os.getenv("DB_DATABASE")
+
+db = mysql.connector.connect(
+    host=DB_HOST,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    database=DB_DATABASE
+)
+cursor = db.cursor()
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'temp'
@@ -76,7 +92,12 @@ def upload():
                     image_array = np.expand_dims(image_array, axis=0)
                     prediction = model.predict(image_array)
                     predicted_label = labels[np.argmax(prediction)]
-                    confidence = np.max(prediction)
+                    confidence = np.max(prediction).item()
+
+                    query = "INSERT INTO predictions (image_url, predicted_label, confidence) VALUES (%s, %s, %s)"
+                    values = (image_url, predicted_label, confidence)
+                    cursor.execute(query, values)
+                    db.commit()
 
                     # Delete the temporary file
                     os.remove(temp_path)
@@ -118,7 +139,7 @@ def predict():
                 image_array = np.expand_dims(image_array, axis=0)
                 prediction = model.predict(image_array)
                 predicted_label = labels[np.argmax(prediction)]
-                confidence = np.max(prediction)
+                confidence = np.max(prediction).item()
 
                 # Upload the image to Google Cloud Storage
                 filename = file.filename

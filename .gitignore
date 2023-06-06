@@ -1,3 +1,6 @@
 model.hdf5
 .gitignore
+.gcloudignore
 key.json
+.env
+temp

@@ -197,50 +197,6 @@ def upload():
             'status': 'error',
             'message': str(e)
         }), 500
-# @app.route('/predict', methods=['POST'])
-# def predict():
-    try:
-        if 'imgFile' in request.files:
-            file = request.files['imgFile']
-            if file.filename != '':
-                # Save the file to a temporary location
-                temp_path = os.path.join(app.config['UPLOAD_FOLDER'], 'temp.jpg')
-                file.save(temp_path)
-                image = load_img(temp_path, target_size=(224,224))
-                os.remove(temp_path)  # Remove the temporary file
-
-                image_array = img_to_array(image) / 255.0
-                image_array = np.expand_dims(image_array, axis=0)
-                prediction = model.predict(image_array)
-                predicted_label = labels[np.argmax(prediction)]
-                confidence = np.max(prediction).item()
-
-                # Upload the image to Google Cloud Storage
-                filename = file.filename
-                blob = bucket.blob(filename)
-                blob.upload_from_string(file.read())
-                image_url = f'https://storage.googleapis.com/{bucket_name}/{filename}'
-                breed_data = breed_info.get(predicted_label, {})
-
-                return jsonify({
-                    'status': 'success',
-                    'message': 'File uploaded successfully',
-                    'name': 'Cats' if predicted_label in ['British Shorthair', 'Persian', 'Sphynx'] else 'Dogs',
-                    'predicted_label': predicted_label,
-                    'confidence': float(confidence),
-                    'image_url': image_url,
-                    'breed_data': breed_data
-                }), 200
-
-        return jsonify({
-            'status': 'error',
-            'message': 'No file was uploaded'
-        }), 400
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'message': str(e)
-        }), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

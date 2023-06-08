@@ -1,6 +1,9 @@
 model.hdf5
+modelv2.hdf5
 .gitignore
 .gcloudignore
 key.json
 .env
 temp
+Cats
+Dogs

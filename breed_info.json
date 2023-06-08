@@ -1,5 +1,5 @@
 {
-    "Chihuahua" : {
+    "chihuahua" : {
         "Breed": "Chihuahua",
         "Description": "The Chihuahua is a small dog breed that requires basic training and supervision to get used to living with other animals and children. They are chatty and often have issues with other dogs they don't recognize. It would be great if the owner had a small garden for the chihuahuas to play in.",
         "Lifespan": "10 - 18 years",
@@ -9,7 +9,7 @@
         "Health_Conditions": "There are some problems that might affect your little Chihuahua because of their genetic issues. Chihuahuas are potentially prone to heart problems (patent ductus arteriosus, mitral valve disease), eye disease, and patellar luxation (loose kneecaps). Idiopathic epilepsy is also known to occur in the breed.",
         "Grooming": "Based on Chihuahua's coat varieties, grooming needs vary. Smooth-coat Chihuahuas only need occasional brushing and daily baths, while longhaired Chihuahuas should be brushed at least once a week to avoid tangles. Some recommended health tests from the AKC National Breed Club include Patella Evaluation, Cardiac Exam, and Ophthalmologist Evaluation."
     },
-    "Golden Retriver" : {
+    "golden_retriever" : {
         "Breed": "Golden Retriver",
         "Description": "Golden Retrievers are outgoing, playful, and probably the perfect pet for just anyone. Their tolerant attitude and the fact that they're intelligent and easy to train makes them excellent family dogs for either experienced or inexperienced owners.",
         "Lifespan": "10 - 12 years",
@@ -19,7 +19,7 @@
         "Health_Conditions": "Golden Retrievers are generally healthy dogs, but responsible pet owners should be aware of certain health conditions including elbow and hip dysplasia, eye conditions (juvenile cataracts, pigmentary uveitis, and progressive retinal atrophy), and certain heart diseases (subvalvular aortic stenosis). Weekly checks for ear infections and regular teeth brushing are also recommended.",
         "Grooming": "Golden Retrievers need regular brushing with a slicker brush once or twice a week to remove dead hairs. During heavy shedding periods, which occur once or twice a year, daily brushing is necessary. Occasional baths are sufficient to keep them clean and help remove dead hairs. However, they should be completely dry before brushing begins."
     },
-    "Poodle" : {
+    "poodle" : {
         "Breed": "Poodle",
         "Description": "Poodles enjoy active walks. They will bark and be wary of guests or anything unusual. If given training, poodles can become housekeepers and look after children. It is better if the poodle is cared for by someone with experience.",
         "Lifespan": "12 - 15 years",
@@ -29,7 +29,7 @@
         "Health_Conditions": "Poodles can have various health issues, including hip dysplasia, several eye disorders, idiopathic epilepsy, sebaceous adenitis, von Willebrand disease, and immune-mediated disorders. Orthopedic problems such as Legg-Calve-Perthes disease and luxating patellas are also seen in some Toy and Miniature Poodles. Standards have a higher risk for gastric dilatation with volvulus (bloat) and sebaceous adenitis.",
         "Grooming": "Poodles require daily brushing to prevent matting unless they are kept in a short trim. If the coat becomes matted close to the roots, the hair will need to be shaved off to allow new growth. Many Poodle owners choose to keep their pets' hair shorter. Regular grooming visits or learning how to perform clipping and cutting yourself are recommended. Poodles are a great option for people with allergies due to their comparatively non-shedding coat."
     },
-    "Rottweiler" : {
+    "rottweiler" : {
         "Breed": "Rottweiler",
         "Description": "Although friendly, Rottweilers can sometimes be aloof and take their time making friends with people. However, they get along nicely with adults, kids, and other pets. The Rottweiler dog breed suits an experienced owner with a large property who wants a loyal one-man dog that they can enjoy training and socializing.",
         "Lifespan": "8 - 10 years",
@@ -39,7 +39,7 @@
         "Health_Conditions": "Responsible Rottweiler breeders have prospective sires and dams examined for health issues such as hip dysplasia, eye diseases, and heart abnormalities before mating. Occasionally, the breed is prone to cancer. The Rottweiler Health Foundation has supported research on cancer prevention. Regular vaccination can boost the immune system and help keep both male and female Rottweilers healthy until at least age six.",
         "Grooming": "Rottweilers have a flat, straight, and medium-length exterior coat. The undercoat covers the neck and thighs. They need to be brushed once a week and bathed regularly. They shed more profusely twice a year, typically in the spring and fall. Weekly tooth brushing and nail trimming are also necessary."
     },
-    "Bulldog" : {
+    "bulldog" : {
         "Breed": "Bulldog",
         "Description": "Bulldogs are suitable to be kept by experienced people. They require basic training. Bulldogs are one of the most talkative and vocal dog breeds. They bark at guests or strangers and are alert to anything unusual. Bulldogs are great family dogs.",
         "Lifespan": "8 - 12 years",
@@ -49,7 +49,7 @@
         "Health_Conditions": "Bulldog owners need to exercise caution to prevent their dogs from overheating. Bulldogs should not be left unattended in the hot sun without access to shade or water. Their tongue will hang out far and have a bluish cast if they are overexcited or breathing too forcefully. Bulldogs require regular care and attention to maintain their health. The Bulldog Club of America provides detailed guidance on health and upkeep.",
         "Grooming": "Bulldogs should receive a thorough 10-minute brushing two or three times a week. Using a rubber curry brush first can be helpful during heavy shedding. The skin around the wrinkles on the Bulldog's face needs to be kept clean and dry to prevent infection or inflammation. Regular nail trimming and ear cleaning are also required."
     },
-    "Sphynx" : {
+    "sphynx" : {
         "Breed": "Sphynx",
         "Description": "Sphynx is suitable for pet owners who are experienced. Sphynx needs a high level of enrichment, including simulated hunting games and interactive play. They are friendly and dependent cats. Sphynx is also considered a talkative cat despite needing a calm environment.",
         "Lifespan": "8 - 14 years",
@@ -58,7 +58,7 @@
         "Body_Features": "Sphynx cats differ in their degree of hairlessness, with some having a very fine \"peach fuzz\" all over and others having just a fine fuzz over the extremities. Their lack of fur is still the most noticeable trait of this striking cat. The lack of fur allows everyone to clearly see the Sphynx cat's bone structure and muscle. This cat is remarkably robust, with long, graceful lines and somewhat loose skin that develops wrinkles in some spots. They have a tail that is rather long, neat, rounded paws, and a head that is slightly wedge-shaped with enormous eyes and ears.",
         "Grooming": "Get your kitten used to being bathed or sponged, and in particular, to having ears cleaned, from a very young age so that this is a joyful bonding time and not a conflict. The Sphynx cat's sparse fur and skin does need frequent cleaning and upkeep. Like all cats, this breed requires annual health examinations, parasite treatment, and routine vaccines."
     },
-    "Persian" : {
+    "persian" : {
         "Breed": "Persian",
         "Description": "The Persian cat is as sweet and easy going as it can get. The fancy felines are loving and charming creatures that would get along with the entire family if introduced to them as kittens. But beauty is not always effortless, so Persian cats do require extra attention.",
         "Lifespan": "10 - 12 years",
@@ -67,7 +67,7 @@
         "Body_Features": "Persian cats are medium-sized and stocky, with a big, broad head that is significantly larger in relation to the body, large round eyes, and a short nose that gives them a distinctive, slightly unhappy appearance. The petite, wide-set ears emphasize the face's size and roundness even more. With short, strong legs, broad, round paws, and a short, bushy tail, the body is compact. With a silky, deep undercoat, the coat is long, incredibly dense, and luxurious.",
         "Grooming": "The Persian Longhair needs to be groomed every day, often more than once. Because of their short, stocky bodies, long, thick coats, and flat faces, they are unable to efficiently groom themselves. After every trip to the litter box, pay close care to cleaning beneath the tail and the area around the face and eyes. If your cat frequently gets dirty in this area, it could be a good idea to clip the fur there and around the genitalia."
     },
-    "British Shorthair" : {
+    "british_shorthair" : {
         "Breed": "British Shorthair",
         "Description": "Affectionate, playful, and loyal, the British Shorthair is a very companionable cat with family and close friends, although they may take a little time to warm up to strangers. The British Shorthair gets on well in multi-cat households and will befriend other household pets too.",
         "Lifespan": "12 - 17 years",
@@ -76,7 +76,7 @@
         "Body_Features": "The British Shorthair is a compact, chunky cat that ranges in size from medium to large. It is renowned for its appealing features and thick, silky coat. The British Shorthair is a short-coupled, sturdy cat with wide, round eyes and a round face that give it a lovely appearance and loads of personality.",
         "Grooming": "The British Shorthair cat, while having short hair, has a very dense coat. A weekly comb through can help remove dead hair and act as a good way to check for parasites or injuries. Regularly giving your cat a fast brush will help you identify sick cats. One of the first indicators of illness is frequently an area of their coat that is greasy and out of reach for them, or they may not be well enough to exert the normal effort."
     },
-    "Bengal" : {
+    "bengal" : {
         "Breed": "Bengal",
         "Description": "They are into everything, highly amused by simple things such as a dripping tap or flowing water (watch them for knocking your water glass over to see the water spill!), they adore human company and will play for hours. This is not really a lap cat; they are simply too busy with stuff and things to want to settle on your lap for long. Bengal is capable of a loud and strident cry when things are not going their way or they feel they are lacking attention.",
         "Lifespan": "10 - 16 years",

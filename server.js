@@ -3,7 +3,8 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-require("dotenv").config()
+require("dotenv").config();
+const articles = require('./articles.json');
 
 const DB_HOST = process.env.DB_HOST
 const DB_USER = process.env.DB_USER
@@ -101,6 +102,10 @@ app.get('/user', (req, res) => {
       }
     });
   }
+});
+
+app.get('/article', (req, res) => {
+  res.json(articles);
 });
 
 app.listen(3000, () => {

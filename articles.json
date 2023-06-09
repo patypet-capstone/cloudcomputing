@@ -1,0 +1,27 @@
+[
+    {
+        "title" : "Do Cats Know When They Are Dying?",
+        "url" : "https://www.petmd.com/cat/general-health/do-cats-know-when-they-are-dying",
+        "jenis" : "kucing"
+    },
+    {
+        "title" : "Which Flowers and Plants Are Safe for Cats?",
+        "url" : "https://www.petmd.com/cat/care/safe-flowers-dogs-cats",
+        "jenis" : "kucing"
+    },
+    {
+        "title" : "How to Read a Cat's Body Language",
+        "url" : "https://www.petmd.com/cat/behavior/cat-body-language",
+        "jenis" : "kucing"
+    },
+    {
+        "title" : "How Often Should You Walk Your Dog?",
+        "url" : "https://www.petmd.com/dog/general-health/how-often-should-you-walk-your-dog",
+        "jenis" : "anjing"
+    },
+    {
+        "title" : "Why Do Dogs Wag Their Tails?",
+        "url" : "https://www.petmd.com/dog/behavior/why-do-dogs-wag-their-tails",
+        "jenis" : "anjing"
+    }
+]

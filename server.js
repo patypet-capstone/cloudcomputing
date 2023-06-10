@@ -31,6 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const jwtSecret = 'patypet_secret';
 
+
 app.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
   
@@ -104,8 +105,15 @@ app.get('/user', (req, res) => {
   }
 });
 
-app.get('/article', (req, res) => {
-  res.json(articles);
+app.get('/articles', (req, res) => {
+  const { jenis } = req.query;
+  let filteredArticles = articles;
+  
+  if (jenis) {
+    filteredArticles = articles.filter(article => article.jenis === jenis);
+  }
+  
+  res.json(filteredArticles);
 });
 
 app.listen(3000, () => {

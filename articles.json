@@ -1,27 +1,37 @@
 [
     {
-        "title" : "Do Cats Know When They Are Dying?",
-        "url" : "https://www.petmd.com/cat/general-health/do-cats-know-when-they-are-dying",
-        "jenis" : "kucing"
-    },
-    {
-        "title" : "Which Flowers and Plants Are Safe for Cats?",
-        "url" : "https://www.petmd.com/cat/care/safe-flowers-dogs-cats",
-        "jenis" : "kucing"
-    },
-    {
-        "title" : "How to Read a Cat's Body Language",
-        "url" : "https://www.petmd.com/cat/behavior/cat-body-language",
-        "jenis" : "kucing"
-    },
-    {
-        "title" : "How Often Should You Walk Your Dog?",
-        "url" : "https://www.petmd.com/dog/general-health/how-often-should-you-walk-your-dog",
-        "jenis" : "anjing"
-    },
-    {
-        "title" : "Why Do Dogs Wag Their Tails?",
-        "url" : "https://www.petmd.com/dog/behavior/why-do-dogs-wag-their-tails",
-        "jenis" : "anjing"
-    }
+        "title": "Do Cats Know When They Are Dying?",
+        "url": "https://www.petmd.com/cat/general-health/do-cats-know-when-they-are-dying",
+        "imageUrl": "https://image.petmd.com/files/styles/978x550/public/2022-12/iStock-177027004.jpg",
+        "shortDescription": "How do cats experience their final days? Do they know they are about to die, and how can you comfort them?",
+        "jenis": "kucing"
+      },
+      {
+        "title": "Which Flowers and Plants Are Safe for Cats?",
+        "url": "https://www.petmd.com/cat/care/safe-flowers-dogs-cats",
+        "imageUrl": "https://image.petmd.com/files/styles/978x550/public/cute-ginger-cat-sitting-on-window-sill-near-indoors-decorative-plants.jpg",
+        "shortDescription": "Do you know which flowers and plants are safe for cats? Check out our list so you can keep your cat out of harm's way.",
+        "jenis": "kucing"
+      },
+      {
+        "title": "How to Read a Cat's Body Language",
+        "url": "https://www.petmd.com/cat/behavior/cat-body-language",
+        "imageUrl": "https://image.petmd.com/files/styles/978x550/public/2023-05/how-to-read-cat-body-language.jpg",
+        "shortDescription": "Cats have their own ways of communication, and learning to read cat body language is important for knowing what your kitty is telling you. Here's how to read the body language of a cat.",
+        "jenis": "kucing"
+      },
+      {
+        "title": "How Often Should You Walk Your Dog?",
+        "url": "https://www.petmd.com/dog/general-health/how-often-should-you-walk-your-dog",
+        "imageUrl": "https://image.petmd.com/files/styles/978x550/public/2023-02/how-often-should-you-walk-your-dog.jpg",
+        "shortDescription": "Leash walking a dog is important for their physical and mental health. Learn how often you should go on dog walks, and get tips for walking dogs here.",
+        "jenis": "anjing"
+      },
+      {
+        "title": "Why Do Dogs Wag Their Tails?",
+        "url": "https://www.petmd.com/dog/behavior/why-do-dogs-wag-their-tails",
+        "imageUrl": "https://image.petmd.com/files/styles/978x550/public/2023-05/why-do-dogs-wag-their-tail.jpeg",
+        "shortDescription": "Ever wondered if dogs only wag their tails when they’re happy? Dr. Brittany Grenus answers all your questions about dog tail wagging meanings.",
+        "jenis": "anjing"
+      }
 ]

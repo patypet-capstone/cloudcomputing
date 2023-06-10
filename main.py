@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-import tensorflow as tf
 from keras.models import load_model
 from keras_preprocessing.image import load_img, img_to_array
 import numpy as np
@@ -69,7 +68,6 @@ def upload():
         if 'imgFile' in request.files:
             file = request.files['imgFile']
             if file and allowed_file(file.filename):
-                # Periksa ukuran file
                 if len(file.read()) > app.config['MAX_CONTENT_LENGTH']:
                     return jsonify({
                         'status': 'error',
@@ -77,58 +75,36 @@ def upload():
                     }), 400
                 file.seek(0)
                 if file.filename != '':
-                    # Generate a unique filename
                     unique_filename = f'{uuid.uuid4().hex}_{file.filename}'
-                    # Save the file to a temporary location
                     temp_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
                     file.save(temp_path)
-                    # Upload the file to Google Cloud Storage
                     blob = bucket.blob(unique_filename)
                     blob.upload_from_filename(temp_path)
-
-                    # Get the public URL of the uploaded file
                     image_url = f'https://storage.googleapis.com/{bucket.name}/{unique_filename}'
-
-                    # Make a prediction on the uploaded image
                     image = load_img(temp_path, target_size=(224, 224))
                     image_array = img_to_array(image) / 255.0
                     image_array = np.expand_dims(image_array, axis=0)
                     prediction = model.predict(image_array)
                     predicted_label = labels[np.argmax(prediction)]
                     confidence = np.max(prediction).item()
-
-                    query = "INSERT INTO predictions (image_url, predicted_label, confidence) VALUES (%s, %s, %s)"
-                    values = (image_url, predicted_label, confidence)
-                    cursor.execute(query, values)
-                    db.commit()
-
-                    # Delete the temporary file
                     os.remove(temp_path)
+
                     breed_data = breed_info.get(predicted_label, {})
 
                     if predicted_label in cats_labels:
-                        # Mengambil data dari database berdasarkan label kucing
                         query = "SELECT * FROM groom_product WHERE jenis IN ('kucing','kucing_anjing')"
-                        
                     elif predicted_label in dogs_labels:
-                        # Mengambil data dari database berdasarkan label anak_anjing dan anjing
                         query = "SELECT * FROM groom_product WHERE jenis IN ('anak_anjing', 'anjing', 'kucing_anjing')"
                     else:
-                        query = ""  # Tidak ada query yang dieksekusi
+                        query = ""
 
                     if query:
                         cursor.execute(query)
                         groom_result = cursor.fetchall()
                     else:
-                        groom_result = []  # Tidak ada data yang diambil dari database
+                        groom_result = []
 
-                    # Menyusun data yang diperoleh menjadi format yang diinginkan
                     groom_data = []
-
-                    # if predicted_label in dogs_labels:
-                    #     query_food = "SELECT * FROM food_product WHERE jenis IN ('anjing_dewasa','anjing_dewasa_kecil','anjing_kecil')"
-                    # elif predicted_label in cats_labels:
-                    #     query_food = "SELECT * FROM food_product WHERE jenis IN ('kucing_dewasa','kucing_kecil')"
                     if predicted_label == 'bulldog':
                         query_food = "SELECT * FROM food_product WHERE jenis IN ('anjing_kecil_bulldog','anjing_dewasa','anjing_dewasa_kecil','anjing_kecil')"
                     elif predicted_label == 'bengal':
@@ -146,23 +122,22 @@ def upload():
                     elif predicted_label == 'sphynx':
                         query_food = "SELECT * FROM food_product WHERE jenis IN ('kucing_dewasa_spyhnx','kucing_dewasa','kucing_kecil')"
                     else:
-                        query_food = ""  # Tidak ada query yang dieksekusi
+                        query_food = ""
 
                     if query_food:
                         cursor.execute(query_food)
                         food_result = cursor.fetchall()
                     else:
-                        food_result = []  # Tidak ada data yang diambil dari database
+                        food_result = []
 
-                    # Menyusun data food yang diperoleh menjadi format yang diinginkan
                     food_data = []
-
                     shop_data = []
                     for row in groom_result:
                         groom_data.append({
                             'product_name': row[1],
                             'product_price': row[2],
                             'product_url': row[3],
+                            'product_img': row[5]
                         })
 
                     for row in food_result:
@@ -170,12 +145,18 @@ def upload():
                             'product_name': row[1],
                             'product_price': row[2],
                             'product_url': row[3],
+                            'product_img': row[5]
                         })
 
                     shop_data.append({
                         'groom_data': groom_data,
                         'food_data': food_data
                     })
+
+                    query = "INSERT INTO temporary_predictions (predicted_label, confidence, image_url) VALUES (%s, %s, %s)"
+                    values = (predicted_label, confidence, image_url)
+                    cursor.execute(query, values)
+                    db.commit()
 
                     return jsonify({
                         'status': 'success',
@@ -185,7 +166,7 @@ def upload():
                         'confidence': float(confidence),
                         'image_url': image_url,
                         'breed_data': breed_data,
-                        'shop_data': shop_data
+                        'shop_data': shop_data,
                     }), 200
 
         return jsonify({
@@ -197,6 +178,103 @@ def upload():
             'status': 'error',
             'message': str(e)
         }), 500
+
+@app.route('/save', methods=['POST'])
+def save():
+    try:
+        query = "SELECT * FROM temporary_predictions ORDER BY id DESC LIMIT 1"
+        cursor.execute(query)
+        data = cursor.fetchall()
+
+        if data:
+            row = data[0]
+            insert_query = "INSERT INTO predictions (image_url, predicted_label, confidence) VALUES (%s, %s, %s)"
+            values = (row[2], row[3], row[4])
+            cursor.execute(insert_query, values)
+            db.commit()
+
+            delete_query = "DELETE FROM temporary_predictions WHERE id = %s"
+            cursor.execute(delete_query, (row[0],))
+            db.commit()
+
+            return jsonify({
+                'status': 'success',
+                'message': 'The latest temporary prediction has been saved to the permanent table'
+            }), 200
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': 'No temporary prediction found'
+            }), 404
+
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+    
+@app.route('/edit', methods=['PUT'])
+def edit_prediction():
+    try:
+        prediction_id = request.args.get('id')
+        new_name = request.args.get('name')
+
+        if not prediction_id or not new_name:
+            return jsonify({
+                'status': 'error',
+                'message': 'Please provide prediction ID and new name'
+            }), 400
+
+        select_query = "SELECT * FROM predictions WHERE id = %s"
+        cursor.execute(select_query, (prediction_id,))
+        prediction = cursor.fetchone()
+
+        if not prediction:
+            return jsonify({
+                'status': 'error',
+                'message': 'Prediction not found'
+            }), 404
+
+        update_query = "UPDATE predictions SET name = %s WHERE id = %s"
+        cursor.execute(update_query, (new_name, prediction_id))
+        db.commit()
+
+        return jsonify({
+            'status': 'success',
+            'message': 'Prediction name updated successfully'
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+@app.route('/allPet', methods=['GET'])
+def get_predictions():
+    try:
+        query = "SELECT * FROM predictions"
+        cursor.execute(query)
+        data = cursor.fetchall()
+
+        columns = [column[0] for column in cursor.description]
+
+        result = []
+        for row in data:
+            row_data = dict(zip(columns, row))
+            result.append(row_data)
+
+        return jsonify({
+            'status': 'success',
+            'data': result
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

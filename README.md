@@ -21,3 +21,7 @@ A pet-related app that offers several features such as breed classification, obe
 | Ahmad Rolandi Hernafahreza | Mobile Development | a151dsx1000@bangkit.academy | [@ahmrh](https://www.github.com/ahmrh) |
 | Adi Syahrul Setya Budi | Cloud Computing | c038dsx1966@bangkit.academy | [@AdiSyahrul](https://github.com/AdiSyahrul) |
 | Oswald Dew Sachio | Cloud Computing | c038dsx1369@bangkit.academy | [@swalddy](https://github.com/swalddy) |
+
+### Branch
+- flask branch is for the Image Detection API
+- dev3 is for the Auth API

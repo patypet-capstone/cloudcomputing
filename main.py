@@ -58,6 +58,12 @@ def allowed_file(filename):
     allowed_extensions = {'jpg', 'jpeg', 'png', 'gif'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
+import requests
+
+response = requests.get('http://localhost:3000/getGlobalInfo')
+global_info = response.json()
+email = global_info.get('lastLoggedInEmail')
+
 @app.route('/')
 def home():
     return 'Hello World!'
@@ -153,11 +159,12 @@ def upload():
                         'food_data': food_data
                     })
 
-                    query = "INSERT INTO temporary_predictions (predicted_label, confidence, image_url) VALUES (%s, %s, %s)"
-                    values = (predicted_label, confidence, image_url)
+                    query = "INSERT INTO temporary_predictions (email, predicted_label, confidence, image_url) VALUES (%s, %s, %s, %s)"
+                    values = (email, predicted_label, confidence, image_url)
                     cursor.execute(query, values)
                     db.commit()
-
+                    global_info['lastLoggedInEmail'] = email
+                    
                     return jsonify({
                         'status': 'success',
                         'message': 'File uploaded successfully',
@@ -167,6 +174,7 @@ def upload():
                         'image_url': image_url,
                         'breed_data': breed_data,
                         'shop_data': shop_data,
+                        'email': email
                     }), 200
 
         return jsonify({
@@ -182,16 +190,19 @@ def upload():
 @app.route('/save', methods=['POST'])
 def save():
     try:
+        # email = global_info.get('email')
         query = "SELECT * FROM temporary_predictions ORDER BY id DESC LIMIT 1"
         cursor.execute(query)
+        new_prediction_id = cursor.lastrowid
         data = cursor.fetchall()
 
         if data:
             row = data[0]
-            insert_query = "INSERT INTO predictions (image_url, predicted_label, confidence) VALUES (%s, %s, %s)"
-            values = (row[2], row[3], row[4])
+            insert_query = "INSERT INTO predictions (image_url, predicted_label, confidence, email) VALUES (%s, %s, %s, %s)"
+            values = (row[2], row[3], row[4], row[5])
             cursor.execute(insert_query, values)
             db.commit()
+            global_info['lastLoggedInEmail'] = email
 
             delete_query = "DELETE FROM temporary_predictions WHERE id = %s"
             cursor.execute(delete_query, (row[0],))
@@ -199,7 +210,8 @@ def save():
 
             return jsonify({
                 'status': 'success',
-                'message': 'The latest temporary prediction has been saved to the permanent table'
+                'message': 'The latest temporary prediction has been saved to the permanent table',
+                'prediction_id': new_prediction_id
             }), 200
         else:
             return jsonify({
@@ -213,7 +225,7 @@ def save():
             'message': str(e)
         }), 500
     
-@app.route('/edit', methods=['PUT'])
+@app.route('/pet/edit', methods=['PUT'])
 def edit_prediction():
     try:
         prediction_id = request.args.get('id')
@@ -251,7 +263,7 @@ def edit_prediction():
         }), 500
 
 @app.route('/allPet', methods=['GET'])
-def get_predictions():
+def get_pet():
     try:
         query = "SELECT * FROM predictions"
         cursor.execute(query)
@@ -274,7 +286,33 @@ def get_predictions():
             'status': 'error',
             'message': str(e)
         }), 500
+    
+@app.route('/pet/<email>', methods=['GET'])
+def get_pet_by_email(email):
+    try:
+        query = "SELECT * FROM predictions WHERE email = %s"
+        cursor.execute(query, (email,))
+        data = cursor.fetchall()
 
+        if data:
+            columns = [column[0] for column in cursor.description]
+            rows_data = [dict(zip(columns, row)) for row in data]
+
+            return jsonify({
+                'status': 'success',
+                'data': rows_data
+            }), 200
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': 'No predictions found for the email'
+            }), 404
+
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

@@ -30,10 +30,13 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const jwtSecret = 'patypet_secret';
+const globalInfo = {};
 
 
 app.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
+  globalInfo.email = email;
+  globalInfo.name = name;
   
   if (!emailRegex.test(email)) {
     res.status(400).json({ error: 'Invalid email format' });
@@ -59,6 +62,7 @@ app.post('/register', async (req, res) => {
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   const sql = 'SELECT * FROM users WHERE email = ?';
+  const { email: globalEmail, name: globalName } = globalInfo;
   db.query(sql, [email], async (err, result) => {
     if (err) {
       res.status(500).json({ error: 'Failed to log in' });
@@ -81,6 +85,7 @@ app.post('/login', (req, res) => {
 
 app.get('/user', (req, res) => {
   const token = req.headers.authorization;
+  const { email: globalEmail, name: globalName } = globalInfo;
   if (!token) {
     res.status(401).json({ error: 'Authorization token not provided' });
   } else {
@@ -114,6 +119,10 @@ app.get('/articles', (req, res) => {
   }
   
   res.json(filteredArticles);
+});
+
+app.get('/getGlobalInfo', (req, res) => {
+  res.json(globalInfo);
 });
 
 app.listen(3000, () => {

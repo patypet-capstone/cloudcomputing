@@ -62,7 +62,6 @@ app.post('/register', async (req, res) => {
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   const sql = 'SELECT * FROM users WHERE email = ?';
-  const { email: globalEmail, name: globalName } = globalInfo;
   db.query(sql, [email], async (err, result) => {
     if (err) {
       res.status(500).json({ error: 'Failed to log in' });
@@ -74,7 +73,7 @@ app.post('/login', (req, res) => {
         const token = jwt.sign({ email: result[0].email, name: result[0].name }, jwtSecret, {
           expiresIn: '1h'
         });
-        
+        lastLoggedInEmail = result[0].email;
         res.status(200).json({ name: result[0].name, token: token });
       } else {
         res.status(401).json({ error: 'Invalid credentials' });
@@ -122,7 +121,7 @@ app.get('/articles', (req, res) => {
 });
 
 app.get('/getGlobalInfo', (req, res) => {
-  res.json(globalInfo);
+  res.json({ lastLoggedInEmail });
 });
 
 app.listen(3000, () => {

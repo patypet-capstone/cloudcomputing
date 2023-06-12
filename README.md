@@ -24,4 +24,14 @@ A pet-related app that offers several features such as breed classification, obe
 
 ### Branch
 - flask branch is for the Image Detection API
-- dev3 is for the Auth API
+- auth is for the Auth API
+
+### List of API
+- POST 
+    - your_ip/register
+    - your_ip/login
+
+- GET 
+    - your_ip/user
+    - your_ip/articles
+    - yor_ip/getGlobalInfo

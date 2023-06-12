@@ -1,7 +1,7 @@
 
 ## How to Run the Code
 
-Follow the steps below to run the code on your local machine.
+Follow the steps below to run the code on your Virtual Machine.
 
 ### Prerequisites
 - Virtual Machine (VM) environment set up

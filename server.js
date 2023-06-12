@@ -116,6 +116,10 @@ app.get('/articles', (req, res) => {
   res.json(filteredArticles);
 });
 
+app.get('/getGlobalInfo', (req, res) => {
+  res.json({ lastLoggedInEmail });
+});
+
 app.listen(8080, () => {
   console.log('Server started on port 8080');
 });

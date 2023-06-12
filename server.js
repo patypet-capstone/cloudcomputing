@@ -30,10 +30,13 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const jwtSecret = 'patypet_secret';
+const globalInfo = {};
 
 
 app.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
+  globalInfo.email = email;
+  globalInfo.name = name;
   
   if (!emailRegex.test(email)) {
     res.status(400).json({ error: 'Invalid email format' });
@@ -70,7 +73,7 @@ app.post('/login', (req, res) => {
         const token = jwt.sign({ email: result[0].email, name: result[0].name }, jwtSecret, {
           expiresIn: '1h'
         });
-        
+        lastLoggedInEmail = result[0].email;
         res.status(200).json({ name: result[0].name, token: token });
       } else {
         res.status(401).json({ error: 'Invalid credentials' });
@@ -81,6 +84,7 @@ app.post('/login', (req, res) => {
 
 app.get('/user', (req, res) => {
   const token = req.headers.authorization;
+  const { email: globalEmail, name: globalName } = globalInfo;
   if (!token) {
     res.status(401).json({ error: 'Authorization token not provided' });
   } else {
@@ -120,6 +124,6 @@ app.get('/getGlobalInfo', (req, res) => {
   res.json({ lastLoggedInEmail });
 });
 
-app.listen(8080, () => {
-  console.log('Server started on port 8080');
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
 });

@@ -30,8 +30,14 @@ A pet-related app that offers several features such as breed classification, obe
 - POST 
     - your_ip/register
     - your_ip/login
+    - your_ip/upload
+    - your_ip/save
 
 - GET 
     - your_ip/user
     - your_ip/articles
-    - yor_ip/getGlobalInfo
+    - your_ip/allPet
+    - your_api/pet/<email>
+
+- PUT 
+    - your_api/pet/edit?id=<id>&name=<name>

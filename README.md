@@ -99,7 +99,7 @@ wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download
 
 6. Run the Flask app using the following command:
 ```shell
-python main.py
+python3 main.py
 ```
 
 ### Accessing the API

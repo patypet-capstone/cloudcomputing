@@ -110,6 +110,11 @@ Remember to replace "YOUR_SERVERS_IP_ADDRESS" with the actual IP address of your
 
 For the endpoint:
 - POST: your_ip/upload
+- POST: your_ip/save
+- PUT : your_ip/pet/edit?id={id}&name={name}
+- GET : your_api/pet/edit?id={id}&name={name}
+- GET : your_api/pet/{email}
+- GET : your_api/pet/{email}/{id}
 
 ### Contributing
 Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or create a pull request.

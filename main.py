@@ -9,6 +9,8 @@ import mysql.connector
 import os
 import uuid
 import json
+from PIL import Image
+import requests
 
 load_dotenv()
 DB_HOST = os.getenv("DB_HOST")
@@ -32,33 +34,24 @@ app.config['JSON_SORT_KEYS'] = False
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# Path to your service account key file
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key.json"
-
-# Create the storage client with the provided credentials and project ID
 credentials, project_id = default()
 storage_client = storage.Client(credentials=credentials, project=project_id)
 
-# Load the trained model
 model = load_model('modelv2.hdf5', compile=False)
-# labels = ['Chihuahua', 'Golden Retriever', 'Poodle', 'Rottweiler', 'Bulldog', 'Sphynx', 'British Shorthair', 'Persian', 'Bengal']
 labels = ['bengal', 'british_shorthair', 'bulldog', 'chihuahua', 'golden_retriever',
                 'persian', 'poodle', 'rottweiler', 'sphynx']
 cats_labels=['bengal', 'british_shorthair','persian','sphynx']
 dogs_labels=['bulldog', 'chihuahua', 'golden_retriever','poodle', 'rottweiler']
-# Load the breed info
 with open('breed_info.json', 'r') as file:
     breed_info = json.load(file)
 
-# Configure Google Cloud Storage
-bucket_name = 'patypet-bucket'  # Replace with your bucket name
+bucket_name = 'patypet-bucket'
 bucket = storage_client.bucket(bucket_name)
 
 def allowed_file(filename):
     allowed_extensions = {'jpg', 'jpeg', 'png', 'gif'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
-
-import requests
 
 response = requests.get('http://localhost:3000/getGlobalInfo')
 global_info = response.json()
@@ -174,7 +167,7 @@ def upload():
                         'image_url': image_url,
                         'breed_data': breed_data,
                         'shop_data': shop_data,
-                        'email': email
+                        'lastLoggedInEmail': email
                     }), 200
 
         return jsonify({
@@ -190,7 +183,6 @@ def upload():
 @app.route('/save', methods=['POST'])
 def save():
     try:
-        # email = global_info.get('email')
         query = "SELECT * FROM temporary_predictions ORDER BY id DESC LIMIT 1"
         cursor.execute(query)
         new_prediction_id = cursor.lastrowid
@@ -202,6 +194,7 @@ def save():
             values = (row[2], row[3], row[4], row[5])
             cursor.execute(insert_query, values)
             db.commit()
+            new_prediction_id = cursor.lastrowid
             global_info['lastLoggedInEmail'] = email
 
             delete_query = "DELETE FROM temporary_predictions WHERE id = %s"
@@ -228,8 +221,9 @@ def save():
 @app.route('/pet/edit', methods=['PUT'])
 def edit_prediction():
     try:
-        prediction_id = request.args.get('id')
-        new_name = request.args.get('name')
+        data = request.json
+        prediction_id = data.get('id')
+        new_name = data.get('name')
 
         if not prediction_id or not new_name:
             return jsonify({
@@ -254,31 +248,6 @@ def edit_prediction():
         return jsonify({
             'status': 'success',
             'message': 'Prediction name updated successfully'
-        }), 200
-
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'message': str(e)
-        }), 500
-
-@app.route('/allPet', methods=['GET'])
-def get_pet():
-    try:
-        query = "SELECT * FROM predictions"
-        cursor.execute(query)
-        data = cursor.fetchall()
-
-        columns = [column[0] for column in cursor.description]
-
-        result = []
-        for row in data:
-            row_data = dict(zip(columns, row))
-            result.append(row_data)
-
-        return jsonify({
-            'status': 'success',
-            'data': result
         }), 200
 
     except Exception as e:
@@ -313,6 +282,71 @@ def get_pet_by_email(email):
             'status': 'error',
             'message': str(e)
         }), 500
+
+app.route('/pet/<email>/<id>', methods=['GET'])
+def get_pet_by_email_and_id(email, id):
+    try:
+        query = "SELECT * FROM predictions WHERE email = %s AND id = %s"
+        cursor.execute(query, (email, id))
+        data = cursor.fetchone()
+
+        if data:
+            columns = [column[0] for column in cursor.description]
+            row_data = dict(zip(columns, data))
+            predicted_label = row_data['predicted_label']
+            breed_data = breed_info.get(predicted_label, {})
+
+            return jsonify({
+                'status': 'success',
+                'data': row_data,
+                'breed_data': breed_data,
+            }), 200
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': 'No prediction found for the email and ID'
+            }), 404
+
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
+
+@app.route('/shop/<product>/', defaults={'jenis': None}, methods=['GET'])
+@app.route('/shop/<product>/<jenis>', methods=['GET'])
+def get_shop_data(product, jenis=None):
+    if product == 'all':
+        cursor.execute("SELECT * FROM food_product UNION SELECT * FROM groom_product")
+    elif product == 'food_product':
+        if jenis is None:
+            cursor.execute("SELECT * FROM food_product")
+        elif jenis in ['kucing', 'anjing']:
+            cursor.execute("SELECT * FROM food_product WHERE jenis LIKE '{}%%'".format(jenis))
+        else:
+            return jsonify({'error': 'Invalid jenis hewan parameter'}), 400
+    elif product == 'groom_product':
+        if jenis is None:
+            cursor.execute("SELECT * FROM groom_product")
+        elif jenis in ['kucing', 'anjing']:
+            cursor.execute("SELECT * FROM groom_product WHERE jenis LIKE '{}%%'".format(jenis))
+        else:
+            return jsonify({'error': 'Invalid jenis hewan parameter'}), 400
+    else:
+        return jsonify({'error': 'Invalid product parameter'}), 400
+
+    results = cursor.fetchall()
+    shop_data = []
+    for row in results:
+        product = {
+            'product_id' : row[0],
+            'product_name': row[1],
+            'product_price': row[2],
+            'product_url': row[3],
+            'product_img': row[5] 
+        }
+        shop_data.append(product)
+    return jsonify(shop_data)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)

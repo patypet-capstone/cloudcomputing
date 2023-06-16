@@ -115,6 +115,3 @@ For the endpoint:
 - GET : your_api/pet/edit?id={id}&name={name}
 - GET : your_api/pet/{email}
 - GET : your_api/pet/{email}/{id}
-
-### Contributing
-Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or create a pull request.

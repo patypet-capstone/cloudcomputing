@@ -43,7 +43,8 @@ sudo apt install python3-pip
 ```
 2. Create a virtual environment for your Flask project by executing the following command:
 ```shell
-python -m venv myenv
+sudo apt install python3.10-venv
+python3 -m venv myenv
 ```
 3. Activate the virtual environment by running the following command:
 ```shell
@@ -99,7 +100,7 @@ wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download
 
 6. Run the Flask app using the following command:
 ```shell
-python main.py
+python3 main.py
 ```
 
 ### Accessing the API

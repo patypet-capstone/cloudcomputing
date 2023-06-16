@@ -36,8 +36,9 @@ A pet-related app that offers several features such as breed classification, obe
 - GET 
     - your_ip/user
     - your_ip/articles
-    - your_ip/allPet
+    - your_ip/shop/<product>/<jenis>
     - your_api/pet/<email>
+    - your_api/pet/<email>/<id>
 
 - PUT 
     - your_api/pet/edit?id=<id>&name=<name>
